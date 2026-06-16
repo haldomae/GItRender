@@ -1,0 +1,43 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>タスク管理</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>タスク一覧</h1>
+    <ul id="task-list"></ul>
+
+    <script>
+        // ★開発段階では仮データを使う（Step 1で決めた形に合わせる）
+        const mockData = {
+            tasks: [
+                { id: 1, title: "TEST", done: false },
+                { id: 2, title: "TEST", done: true },
+            ]
+        };
+
+        function renderTasks(data) {
+            const list = document.getElementById("task-list");
+            data.tasks.forEach(task => {
+                const li = document.createElement("li");
+                li.textContent = task.done ? `✅ ${task.title}` : `⬜ ${task.title}`;
+                list.appendChild(li);
+            });
+        }
+
+        // ★本番切り替え：仮データをfetchに置き換える
+        async function loadTasks() {
+            const response = await fetch("/api/tasks");
+            const data = await response.json();
+            renderTasks(data);  // 関数はそのまま使える
+        }
+
+        // 仮データで表示を確認する
+        // renderTasks(mockData);
+        loadTasks();
+    </script>
+</body>
+</html>
