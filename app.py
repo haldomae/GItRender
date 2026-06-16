@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
 
@@ -8,6 +8,11 @@ tasks = [
     {"id": 1, "title": "Gitの演習をする", "done": False},
     {"id": 2, "title": "Flaskを復習する", "done": True},
 ]
+
+# ★画面（HTML）を返すルート。これがないとブラウザで404になる
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 @app.route("/api/tasks", methods=["GET"])
 def get_tasks():
